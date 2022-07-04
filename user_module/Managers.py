@@ -26,7 +26,5 @@ class CustomUserManager(BaseUserManager):
     #     return self._create_user(email, password, **extra_fields)
 
     def create_users(self, email, password, **extra_fields):
-
         extra_fields.setdefault('is_active', True)
-
         return self._create_user(email, password, **extra_fields)

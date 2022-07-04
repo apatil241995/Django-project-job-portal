@@ -18,7 +18,7 @@ class CustomUsers(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(unique=True, max_length=100)
     full_name = models.CharField(max_length=200)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES, blank=False, default="SUPERUSER")
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, blank=False)
     date_joined = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     modified_date = models.DateTimeField(default=timezone.now)
