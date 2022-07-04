@@ -1,4 +1,6 @@
-#!/home/mindbowser/Desktop/online_job_portal/venv/bin/python
+#!/bin/sh
+'''exec' "/home/mindbowser/Documents/DRF Project Folder/Django-project-job-portal/venv/bin/python" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys

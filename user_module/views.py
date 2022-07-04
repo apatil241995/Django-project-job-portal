@@ -2,15 +2,17 @@ from rest_framework import status
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from . import models
-from . import serializer
+from .serializers import (RegistrationSerializer,
+                          UserLoginSerializer,
+                          ForgotPasswordSerializer,
+                          ResetPasswordSerializer,
+                          LogoutSerializer)
 
 
 class Registration(generics.CreateAPIView):
-    serializer_class = serializer.RegistrationSerializer
+    serializer_class = RegistrationSerializer
 
     def post(self, request, *args, **kwargs):
-
         print("REQUEST DATA", request.data)
         serialized_data = self.serializer_class(data=request.data)
         valid = serialized_data.is_valid(raise_exception=True)
@@ -32,7 +34,7 @@ class Registration(generics.CreateAPIView):
 
 
 class UserLogin(generics.GenericAPIView):
-    serializer_class = serializer.UserLoginSerializer
+    serializer_class = UserLoginSerializer
 
     def post(self, request, *args, **kwargs):
         print("REQUEST DATA", request.data)
@@ -61,7 +63,7 @@ class UserLogin(generics.GenericAPIView):
 
 class ForgotPassword(generics.GenericAPIView):
     def post(self, request):
-        serializers = serializer.ForgotPasswordSerializer(data=request.data)
+        serializers = ForgotPasswordSerializer(data=request.data)
         if serializers.is_valid(raise_exception=True):
             return Response({'message': 'Check email for password reset link!'}, status=status.HTTP_200_OK)
         return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -70,7 +72,7 @@ class ForgotPassword(generics.GenericAPIView):
 # View class for resetting password using link received
 class ResetPassword(generics.GenericAPIView):
     def post(self, request, uid, token):
-        serializers = serializer.ResetPasswordSerializer(data=request.data, context={
+        serializers = ResetPasswordSerializer(data=request.data, context={
             'uid': uid, 'token': token})
         if serializers.is_valid(raise_exception=True):
             return Response({'message': 'Password reset successful!'}, status=status.HTTP_200_OK)
@@ -79,7 +81,7 @@ class ResetPassword(generics.GenericAPIView):
 
 # View class for blacklisting refresh token on User Logout
 class Logout(generics.GenericAPIView):
-    serializer_class = serializer.LogoutSerializer
+    serializer_class = LogoutSerializer
     permission_classes = [IsAuthenticated, ]
 
     def post(self, request):
